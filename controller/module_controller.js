@@ -36,7 +36,7 @@ module.exports.addModule = function(req,res){
 
 module.exports.getModuleByProjectId = function(req,res){
     let projectId = req.params.projectId
-    moduleModel.find({Project:projectId}).exec(function(err,data){
+    moduleModel.find({Project:projectId}).populate("Project").populate("Status").exec(function(err,data){
         console.log(err);
         if(err){
             console.log(err)

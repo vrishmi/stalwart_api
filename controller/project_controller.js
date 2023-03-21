@@ -40,6 +40,7 @@ const projectModel = require("../model/project_model")
             }
             else
             {
+            
                 res.json({
                     msg: "DATA ADDED",
                     status : 200,
@@ -89,6 +90,29 @@ const projectModel = require("../model/project_model")
                 }
             })
     }
+    module.exports.getProjectByStatusId = function(req,res){
+        let statusId = req.params.statusId
+        projectModel.find({Status:statusId}).populate("Status").exec(function(err,data){
+            console.log(err);
+            if(err){
+                console.log(err)
+                res.json({
+                    msg : "SOMETHING WENT WRONG",
+                    status : -1,
+                    data : err
+                })
+            }
+            else{
+                console.log(data)
+                res.json({
+                    msg : "MODULES",
+                    status : 1,
+                    data : data
+                })
+            }
+        })
+    }
+    
     module.exports.getPiplelineProjects=function(req,res){
         
         projectModel.find( 
@@ -190,8 +214,6 @@ const projectModel = require("../model/project_model")
         )
     }
     
-   
-
     module.exports.getAllProjectData = function(req,res)
     {
         projectModel.find().populate("Status").exec(function(err,data)

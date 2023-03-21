@@ -1,11 +1,7 @@
 const mongoose = require("mongoose")
 
 const TaskSchema = new mongoose.Schema({
-    /*taskDeveId :
-    {
-        type:Number,
-        required:true
-    },*/ 
+    
     User :
     {
         type:mongoose.Schema.Types.ObjectId,

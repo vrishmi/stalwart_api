@@ -37,8 +37,6 @@ module.exports.add_projectUsers = function(req,res){
 
 module.exports.getProjectUserData =function(req,res)
 {
-    //let projectUserId =req.params.projectUserId
-   
     projectUsersModel.find({User:"62eb8e9c91cf048a78738ec5"},function(err,data){
         if(data){
             console.log("--->");
@@ -71,6 +69,39 @@ module.exports.getProjectUserData =function(req,res)
     });
 }
 
+module.exports.getProjectUserDataByPm =function(req,res)
+{
+    projectUsersModel.find({User:req.params.userId},function(err,data){
+        if(data){
+            console.log("--->");
+            console.log(data);
+            let p = [] //[1,2,3,4,5]
+            data.forEach(element => {
+                console.log(element.Project);
+                p.push(element.Project) 
+            });
+            
+            project_model.find({_id: { $in: p}}).populate("Status").exec(function(err,data){
+                if(err)
+                {
+                    res.json({
+                        msg: "ERROR",
+                        status : -1,
+                        data: "SOMETHING WENT WRONG"
+                    })
+                }
+                else
+                {
+                    res.json({
+                        msg: "PROJECT USER DATA RETRIVED",
+                        status : 200,
+                        data: data
+                    }) 
+                }
+            })
+        }
+    });
+}
 module.exports.getAllProjectUsers = function(req,res){
     projectUsersModel.find().populate("User").populate("Project").exec(function(err,data){
         console.log(err);
@@ -143,4 +174,40 @@ module.exports.updateProjectUser = function(req,res){
         }
     })
 
+}
+
+module.exports.getProjectUserDataByStatusid =function(req,res)
+{ 
+    projectUsersModel.find({User:req.params.userId},function(err,data){
+        if(data){
+            console.log("--->");
+            console.log(data);
+            let p = [] //[1,2,3,4,5]
+            data.forEach(element => {
+                console.log(element.Project);
+                p.push(element.Project) 
+            });
+            let statusId = req.params.statusId
+            project_model.find( 
+            {
+                    "$and": [{ _id: { $in: p}},{Status:statusId} ]}).populate("Status").exec(function(err,data){
+                if(err)
+                {
+                    res.json({
+                        msg: "ERROR",
+                        status : -1,
+                        data: "SOMETHING WENT WRONG"
+                    })
+                }
+                else
+                {
+                    res.json({
+                        msg: "PROJECT USER DATA RETRIVED",
+                        status : 200,
+                        data: data
+                    }) 
+                }
+            })
+        }
+    });
 }

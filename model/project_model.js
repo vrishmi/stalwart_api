@@ -10,12 +10,6 @@ const projectSchema = new mongoose.Schema({
     StartDate : String,
     EstimatedHour : String,
     TotalUtilizedHour : String,
-
-   /* Description :
-    {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Role"
-    },*/
     Status :
     {
         type:mongoose.Schema.Types.ObjectId,

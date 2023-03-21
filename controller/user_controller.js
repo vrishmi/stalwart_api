@@ -1,13 +1,30 @@
 
 const user_model = require("../model/user_model")
+const nodemailer = require("nodemailer")
 
-module.exports.forgetPassword=function(req,res)
+module.exports.forgetPassword=async function(req,res)
 {
     let email = req.body.email 
     let isCorrect = false;
     let  otp = parseInt(Math.random()*1000000);
     //authenticate 
     
+    let transporter = await nodemailer.createTransport({
+        service:'gmail',
+        auth: {
+            user: 'dummypatel23@gmail.com',
+            pass: 'yvmxrxddrkpxxdgs'
+        },
+      });
+
+    let info =await transporter.sendMail({
+        from: '"Stalwart Managers " <stalwartmanagers@gmail.com>', // sender address
+        to: email, // list of receivers
+        subject: "Hello User", // Subject line
+        text: "Hello User Check Your otp", // plain text body //not required
+        html: `<b>Your OTP is:${otp} (Don't Share it with anyone)</b>`, // html body
+    });
+
     user_model.findOne({"email":email},function(err,user){
         if(err){
             console.log("Error"+err)
@@ -159,7 +176,7 @@ module.exports.resetPassword=function(req,res)
                                 msg:"Password reset successful",
                                 status:200
                             })
-                        }n
+                        }
                     })
                 }
                 else
@@ -286,6 +303,50 @@ module.exports.getUserById = function(req,res){
 }
 module.exports.getAllUsers = function(req,res){
     user_model.find().populate("Role").exec(function(err,data){
+        console.log(err);
+        if(err){
+            console.log(err)
+            res.json({
+                msg : "SOMETHING WENT WRONG",
+                status : -1,
+                data : err
+            })
+        }
+        else{
+            console.log(err)
+            res.json({
+                msg : "USERS",
+                status : 1,
+                data : data
+            })
+        }
+    })
+}
+
+module.exports.getAllPmUsers = function(req,res){
+    user_model.find({Role:"62eb8e9c91cf048a78738ec5"}).populate("Role").exec(function(err,data){
+        console.log(err);
+        if(err){
+            console.log(err)
+            res.json({
+                msg : "SOMETHING WENT WRONG",
+                status : -1,
+                data : err
+            })
+        }
+        else{
+            console.log(err)
+            res.json({
+                msg : "USERS",
+                status : 1,
+                data : data
+            })
+        }
+    })
+}
+
+module.exports.getAllTaskUsers = function(req,res){
+    user_model.find({Role:"62c95db4d987329c27833c63"}).populate("Role").exec(function(err,data){
         console.log(err);
         if(err){
             console.log(err)

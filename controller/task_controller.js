@@ -67,6 +67,28 @@ module.exports.getAllTaskData = function(req,res)
         }
     })
 }
+module.exports.getTaskByModuelId = function(req,res){
+    let moduleId = req.params.moduleId
+    taskModel.find({Module:moduleId}).populate("Module").populate("Status").exec(function(err,data){
+        
+        if(err){
+            console.log(err)
+            res.json({
+                msg : "SOMETHING WENT WRONG",
+                status : -1,
+                data : err
+            })
+        }
+        else{
+            console.log(data)
+            res.json({
+                msg : "TASKS",
+                status : 1,
+                data : data
+            })
+        }
+    })
+}
 module.exports.getTaskById = function(req,res){
     let taskId = req.params.taskId;
 
