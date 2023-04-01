@@ -204,11 +204,16 @@ module.exports.resetPassword=function(req,res)
     }
 }
 
+
 module.exports.login = function (req, res) {
 
-    //logic 
+    //logic authentication
     let email = req.body.email
     let password = req.body.password
+
+    var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var result = '';
+    for (var i = 16; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
 
     user_model.findOne({
         $and: [
@@ -223,10 +228,20 @@ module.exports.login = function (req, res) {
                 data: req.body
             })
         } else {
-            res.json({
-                status: 200,
-                msg: "Login done...",
-                data: data
+            data.token1=result
+            data.save(function(err,data2){
+                if(err)
+                {
+
+                }
+                else
+                {
+                    res.json({
+                        status: 200,
+                        msg: "Login done...",
+                        data: data
+                    })
+                }
             })
         }
     });
@@ -285,7 +300,7 @@ module.exports.add_users = function(req,res){
 module.exports.getUserById = function(req,res){
     let userId = req.params.userId
 
-    user_model.findOne({_id:userId},function(err,data){
+    user_model.findOne({_id:userId}).populate("Role").exec(function(err,data){
         if (err) {
             res.json({
                 status: -1,

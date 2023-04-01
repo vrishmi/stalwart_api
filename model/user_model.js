@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     gender:String,
     dob:Number,
     joindate:Number,
+    token1:String,
     Role:
     {
         type:mongoose.Schema.Types.ObjectId,
