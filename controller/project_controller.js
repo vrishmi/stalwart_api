@@ -134,6 +134,27 @@ const projectModel = require("../model/project_model")
                 }
             })
     }
+    module.exports.getPendingProjects=function(req,res){
+        
+        projectModel.find( 
+            { 
+                "Status": "6390950797d467165e42e572"
+            }, function (err, data) 
+            {
+                if (err) {
+    
+                } 
+                else 
+                {
+    
+                    res.json({
+                        data: data,
+                        status: 200,
+                        msg: "Done"
+                    })
+                }
+            })
+    }
     module.exports.getOverdueProjects=function(req,res){
         
         projectModel.find( 

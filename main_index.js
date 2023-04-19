@@ -70,6 +70,7 @@ app.get("/getongoingprojects",project_controller.getOngoingProjects)
 app.get("/getpipelineprojects",project_controller.getPiplelineProjects)
 app.get("/getcompletedprojects",project_controller.getCompletedProjects)
 app.get("/getoverdueprojects",project_controller.getOverdueProjects)
+app.get("/getpendingprojects",project_controller.getPendingProjects)
 app.get("/getprojectbystatusid/:statusId",project_controller.getProjectByStatusId)
 
 app.post("/module",module_controller.addModule)
